@@ -1,23 +1,15 @@
 import { Box } from 'components/Box/Box';
-import { nanoid } from 'nanoid';
-import { BtnDelete, ContactItem } from './ContactList.styled';
+import { ContactItem } from './ContactList.styled';
 import PropTypes from 'prop-types';
+import ContactCard from '../ContactCard/ContactCard';
+
 export const ContactList = ({ contacts, deleteCon }) => {
   return (
-    <Box as="ul" width="250px" textAlign="left" p={0}>
-      {contacts.map(e => {
-        const keyId = nanoid();
+    <Box as="ul" textAlign="left" p={0} width="100%" mt={4}>
+      {contacts.map(contact => {
         return (
-          <ContactItem key={keyId} id={e.id}>
-            {e.name}: {e.number}
-            <BtnDelete
-              type="button"
-              onClick={() => {
-                deleteCon(e.id);
-              }}
-            >
-              Delete
-            </BtnDelete>
+          <ContactItem key={contact.id}>
+            <ContactCard contact={contact} deleteContact={deleteCon} />
           </ContactItem>
         );
       })}

@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
-import ContactForm from './ContactForm/Contactform';
+import './App.css';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { Box } from './Box/Box';
+import Title from './Title/Title';
+import Modal from './Modal/Modal';
+import AddContact from './AddContact/AddContact';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   const [contacts, setContacts] = useState(() => {
@@ -10,6 +15,7 @@ export default function App() {
     return parsedItems ? parsedItems : [];
   });
   const [filter, setFilter] = useState('');
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -20,10 +26,14 @@ export default function App() {
   const onSubmitForm = data => {
     const isExist = contacts.map(e => e.name).includes(data.name);
     if (isExist) {
-      alert('Name already exist');
+      toast.warn(`The contact ${data.name} is already exist`);
+
       return;
     }
     setContacts(prevState => [...prevState, data]);
+    toast(`The contact ${data.name} added to all contacts`);
+
+    setModal(false);
   };
 
   const deleteContact = id =>
@@ -33,14 +43,19 @@ export default function App() {
     e.name.toLowerCase().includes(filter.toLowerCase())
   );
   return (
-    <Box display="flex">
-      <Box ml="auto" mr="auto" textAlign="center">
-        <h1>Phonebook</h1>
-        <ContactForm onSubmitForm={onSubmitForm} />
-        <h2>Contacts</h2>
+    <Box p={6}>
+      <Box className="container">
+        <ToastContainer />
+
+        <Title />
+        <AddContact openModal={() => setModal(true)} />
+
         <Filter changeFilter={changeFilter} />
         <ContactList contacts={visibleContacts} deleteCon={deleteContact} />
       </Box>
+      {modal && (
+        <Modal onSubmitForm={onSubmitForm} closeModal={() => setModal(false)} />
+      )}
     </Box>
   );
 }
