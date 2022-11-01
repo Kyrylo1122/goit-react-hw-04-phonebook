@@ -1,0 +1,23 @@
+.footer__title {
+  font-size: 16px;
+  font-weight: 500;
+}
+.footer__title > span {
+  color: #07c;
+}
+.footer__list {
+  margin-top: 16px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+.footer__item:not(:last-child) {
+  margin-right: 16px;
+}
+
+.footer__link {
+  color: rgb(54, 54, 54);
+}
+.footer__link:hover {
+  color: #07c;
+}

@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import './App.css';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { Box } from './Box/Box';
 import Title from './Title/Title';
-import Modal from './Modal/Modal';
 import AddContact from './AddContact/AddContact';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loader from './Loader/Loader';
+import Footer from './Footer/Footer';
 
+const Modal = lazy(() => import('./Modal/Modal'));
 export default function App() {
   const [contacts, setContacts] = useState(() => {
     const parsedItems = JSON.parse(localStorage.getItem('contacts'));
@@ -43,7 +45,7 @@ export default function App() {
     e.name.toLowerCase().includes(filter.toLowerCase())
   );
   return (
-    <Box p={6}>
+    <main className='main'>
       <Box className="container">
         <ToastContainer />
 
@@ -52,10 +54,17 @@ export default function App() {
 
         <Filter changeFilter={changeFilter} />
         <ContactList contacts={visibleContacts} deleteCon={deleteContact} />
+        <Footer />
       </Box>
+
       {modal && (
-        <Modal onSubmitForm={onSubmitForm} closeModal={() => setModal(false)} />
+        <Suspense fallback={<Loader />}>
+          <Modal
+            onSubmitForm={onSubmitForm}
+            closeModal={() => setModal(false)}
+          />
+        </Suspense>
       )}
-    </Box>
+    </main>
   );
 }

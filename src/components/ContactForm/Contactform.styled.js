@@ -10,6 +10,9 @@ export const FormikForm = styled(Form)`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 70%;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `;
 export const FormikField = styled(Field)`
   padding: ${p => p.theme.space[3]}px;
