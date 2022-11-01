@@ -31,7 +31,7 @@ export default function App() {
       return;
     }
     setContacts(prevState => [...prevState, data]);
-    toast(`The contact ${data.name} added to all contacts`);
+    toast(` ${data.name} added to all contacts`);
 
     setModal(false);
   };
